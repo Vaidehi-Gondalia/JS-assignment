@@ -1,7 +1,13 @@
 let items = [];
 
+let container = document.querySelector(".container");
 let products = document.querySelector(".products");
 let product = document.querySelector(".product");
+let pname = document.querySelector(".pname");
+let pprice = document.querySelector(".pprice");
+let Add = document.querySelector(".addproducts");
+let dproduct = document.querySelector(".dproduct");
+console.log(dproduct);
 
 async function getData() {
   await fetch("https://fakestoreapi.com/products")
@@ -24,9 +30,34 @@ async function display(pro) {
                 <div class="image">
               <img src="${element.image}" alt="" width="300px" height="300px"/>
             </div>
+            <button class="dproduct">Delete a product</button>
           </div>`;
     });
   }, 1000);
 }
 
 display(items);
+
+Add.addEventListener("click", (e) => {
+  e.preventDefault();
+  let obj = {
+    title: "",
+    price: 0,
+  };
+
+  obj.title = pname.value;
+  obj.price = pprice.value;
+
+  const product = obj;
+  fetch("https://fakestoreapi.com/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+});
+
+dproduct.addEventListener("click", (e) => {
+  console.log(e.target.value);
+});
